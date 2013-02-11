@@ -1,0 +1,37 @@
+Вызовы
+
+1. Авторизация
+POST /api/employee
+параметры
+email, password
+
+креденшалсы - емейл - ApiConsumer@tula.co , пароль - secret.
+На боевом другой пароль будет.
+
+В удачном случае - возвращается 200 код и авторизационная кука .ASPXAUTH, которую  потом надо подсовывать в каждый вызов.
+В неудачном случае должно возвращаться для всех вызовов 401.
+
+2. Список пользователей
+GET /api/employee
+
+3. Позиции
+GET /api/positions
+
+4. Список проектов
+GET /api/project
+
+5. Проекты деталей
+GET /api/project/{projectId}
+projectId = int
+пример
+GET /api/project/10
+
+6. Список статусов
+GET /api/status
+
+7. Таймшиты
+GET /api/timesheet/{userId}/{startDate}/{endDate}
+userId - int
+startDate, endDate - unix time
+пример
+GET /api/timesheet/77/978307200/1325376000
