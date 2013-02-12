@@ -16,6 +16,9 @@
     <string name="active_tasks_list">Active Tasks</string>
     <string name="mark_closed">Mark Closed</string>
     <string name="trak_selected">Track Selected</string>
+    <string name="start_time">00:00:00</string>
+    <string name="play_button">Play</string>
+    <string name="pause_button">Pause</string>
 
     <!-- Activities titles -->
     <string name="title_activity_login">Login In</string>

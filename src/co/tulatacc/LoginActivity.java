@@ -27,7 +27,7 @@ public class LoginActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(LoginActivity.this, SelectToTrackActivity.class);
+				Intent intent = new Intent(LoginActivity.this, InTimeActivity.class);
 				startActivity(intent);
 			}
 		});
