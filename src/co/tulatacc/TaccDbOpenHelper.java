@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class TaccDbOpenHelper extends SQLiteOpenHelper {
-	private final static int DATABASE_VERSION = 6;
+	private final static int DATABASE_VERSION = 8;
 	
 	private final static String DATABASE_NAME = "Tacc.db";
 	
@@ -87,6 +87,20 @@ public class TaccDbOpenHelper extends SQLiteOpenHelper {
 	
 	private final static String CREATE_TABLE_CUSTOMERS_INDICES = "CREATE INDEX IF NOT EXISTS " +
 		TABLE_CUSTOMERS + "_" + CUSTOMERS_COL_TACC_ID + " ON " + TABLE_CUSTOMERS + " (" + CUSTOMERS_COL_TACC_ID + ");";
+	// -----------------------
+	
+	private final static String TABLE_PROJECTS = "Projects";
+	private final static String PROJECTS_COL_ID = "id";
+	private final static String PROJECTS_COL_TACC_ID = "tacc_id";
+	private final static String PROJECTS_COL_NAME = "name";
+	
+	private final static String CREATE_TABLE_PROJECTS = "CREATE TABLE IF NOT EXISTS " + TABLE_PROJECTS + " (" +
+		PROJECTS_COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+		PROJECTS_COL_TACC_ID + " INTEGER NOT NULL, " +
+		PROJECTS_COL_NAME + " VARCHAR(200) NOT NULL);";
+	
+	private final static String CREATE_TABLE_PROJECTS_INDICES = "CREATE INDEX IF NOT EXISTS " +
+		TABLE_PROJECTS + "_" + PROJECTS_COL_TACC_ID + " ON " + TABLE_PROJECTS + " (" + PROJECTS_COL_TACC_ID + ");";
 	
 	public TaccDbOpenHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -102,6 +116,8 @@ public class TaccDbOpenHelper extends SQLiteOpenHelper {
 		db.execSQL(CREATE_TABLE_TASKS_INDICES);
 		db.execSQL(CREATE_TABLE_CUSTOMERS);
 		db.execSQL(CREATE_TABLE_CUSTOMERS_INDICES);
+		db.execSQL(CREATE_TABLE_PROJECTS);
+		db.execSQL(CREATE_TABLE_PROJECTS_INDICES);
 	}
 
 	@Override
@@ -110,6 +126,7 @@ public class TaccDbOpenHelper extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECORDS + ";");
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_TASKS + ";");
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CUSTOMERS + ";");
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROJECTS + ";");
 		
 		onCreate(db);
 	}
