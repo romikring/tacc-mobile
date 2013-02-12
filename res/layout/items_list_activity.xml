@@ -1,0 +1,31 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/window.max"
+    tools:context=".ItemsList" >
+    
+    <EditText
+        style="@style/EditTextSize"
+        android:id="@+id/start_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="15dp"
+        android:text="01/01/2013"
+        />
+    
+    <EditText
+        style="@style/EditTextSize"
+        android:id="@+id/end_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:text="01/01/2013"
+        />
+    
+
+</RelativeLayout>
