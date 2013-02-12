@@ -14,13 +14,44 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="co.tulatacc.MainActivity"
-            android:label="@string/app_name" >
+            android:name="co.tulatacc.LoginActivity"
+            android:label="@string/title_activity_login" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="co.tulatacc.AddRecordActivity"
+            android:label="@string/title_activity_add_record" >
+        </activity>
+        <activity
+            android:name="co.tulatacc.AddTrackingItemActivity"
+            android:label="@string/title_activity_add_tracking_item" >
+        </activity>
+        <activity
+            android:name="co.tulatacc.FiltersActivity"
+            android:label="@string/title_activity_filters" >
+        </activity>
+        <activity
+            android:name="co.tulatacc.PushTimesheetActivity"
+            android:label="@string/title_activity_push_timesheet" >
+        </activity>
+        <activity
+            android:name="co.tulatacc.InTimeActivity"
+            android:label="@string/title_activity_in_time" >
+        </activity>
+        <activity
+            android:name="co.tulatacc.ItemsListActivity"
+            android:label="@string/title_activity_items_list" >
+        </activity>
+        <activity
+            android:name="co.tulatacc.RecordListActivity"
+            android:label="@string/title_activity_record_list" >
+        </activity>
+        <activity
+            android:name="co.tulatacc.SelectToTrackActivity"
+            android:label="@string/title_activity_select_to_track" >
         </activity>
     </application>
 
