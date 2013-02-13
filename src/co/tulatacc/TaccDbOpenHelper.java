@@ -1,29 +1,39 @@
 package co.tulatacc;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class TaccDbOpenHelper extends SQLiteOpenHelper {
-	private final static int DATABASE_VERSION = 8;
+	private final static int DATABASE_VERSION = 9;
 	
 	private final static String DATABASE_NAME = "Tacc.db";
 	
 	// --- Laps Table ---
 	private final static String TABLE_LAPS = "Laps";
-	private final static String LAPS_COL_ID = "id";
-	private final static String LAPS_COL_LAP = "lap";
-	private final static String LAPS_COL_DATE = "date";
-	private final static String LAPS_COL_TASK = "task_id";
+	public final static String LAPS_COL_ID = "id";
+	public final static String LAPS_COL_START_TIME = "start_time";
+	public final static String LAPS_COL_END_TIME = "end_time";
+	public final static String LAPS_COL_TASK = "task_id";
+	public final static String LAPS_COL_STATE = "state";
 	
 	private final static String CREATE_TABLE_LAPS = "CREATE TABLE IF NOT EXISTS " + TABLE_LAPS + " (" +
 		LAPS_COL_ID + " INTEGER PRIMARY KEY ASC AUTOINCREMENT, " +
-		LAPS_COL_LAP + " INTEGER NOT NULL, " +
-		LAPS_COL_DATE + " INTEGER NOT NULL, " +
-		LAPS_COL_TASK + " INTEGET NOT NULL);";
+		LAPS_COL_START_TIME + " INTEGET NOT NULL, " +
+		LAPS_COL_END_TIME + " INTEGET NOT NULL, " +
+		LAPS_COL_TASK + " INTEGET NOT NULL, " +
+		LAPS_COL_STATE + " INTEGER NOT NULL);";
 	
-	private final static String CREATE_TABLE_LAPS_INDICES = "CREATE INDEX IF NOT EXISTS " +
+	private final static String CREATE_TABLE_LAPS_INDEX_TASK = "CREATE INDEX IF NOT EXISTS " +
 		TABLE_LAPS + "_" + LAPS_COL_TASK + " ON " + TABLE_LAPS + " (" + LAPS_COL_TASK + "); ";
+	
+	private final static String CREATE_TABLE_LAPS_INDEX_STATE = "CREATE INDEX IF NOT EXISTS " +
+			TABLE_LAPS + "_" + LAPS_COL_STATE + " ON " + TABLE_LAPS + " (" + LAPS_COL_STATE + "); ";
 	
 //	private final static String TABLE_TRACKERS = "Trackers";
 	// -------------------
@@ -109,7 +119,8 @@ public class TaccDbOpenHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(CREATE_TABLE_LAPS);
-		db.execSQL(CREATE_TABLE_LAPS_INDICES);
+		db.execSQL(CREATE_TABLE_LAPS_INDEX_STATE);
+		db.execSQL(CREATE_TABLE_LAPS_INDEX_TASK);
 		db.execSQL(CREATE_TABLE_RECORDS);
 		db.execSQL(CREATE_TABLE_RECORDS_INDICES);
 		db.execSQL(CREATE_TABLE_TASKS);
@@ -129,5 +140,49 @@ public class TaccDbOpenHelper extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROJECTS + ";");
 		
 		onCreate(db);
+	}
+	
+	public long startLap(int startTime, int task)
+	{
+		ContentValues cv = new ContentValues();
+		
+		cv.put(LAPS_COL_START_TIME, startTime);
+		cv.put(LAPS_COL_END_TIME, 0);
+		cv.put(LAPS_COL_STATE, 1);
+		cv.put(LAPS_COL_TASK, task);
+		
+		return getWritableDatabase().insert(TABLE_LAPS, null, cv);
+	}
+	
+	public boolean endLap(int endTime, int lapId)
+	{
+		ContentValues cv = new ContentValues();
+		
+		cv.put(LAPS_COL_END_TIME, endTime);
+		cv.put(LAPS_COL_STATE, 0);
+		
+		String whereClause = LAPS_COL_ID + "=" + lapId;
+		String whereArgs[] = null;
+		
+		return getWritableDatabase().update(TABLE_LAPS, cv, whereClause, whereArgs) > 0;
+	}
+	
+	public HashMap<String, String> findActiveLap() {
+		String result[] = {LAPS_COL_ID, LAPS_COL_START_TIME, LAPS_COL_END_TIME, LAPS_COL_TASK, LAPS_COL_STATE};
+		String whereClause = LAPS_COL_STATE + "=1";
+		String whereArgs[] = null;
+		
+		Cursor cur = getWritableDatabase().query(TABLE_LAPS, result, whereClause, whereArgs, null, null, null);
+		
+		if (cur.getCount() < 1) {
+			return null;
+		}
+		
+		HashMap<String, String> hash = new HashMap<String, String>(5);
+		for (String key : result) {
+			hash.put(key, cur.getString(cur.getColumnIndex(key)));
+		}
+		
+		return hash;
 	}
 }
