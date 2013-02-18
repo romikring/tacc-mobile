@@ -1,2 +1,7 @@
 1. Download Customers when user signed in. (Separate thread)
    Add new task/ticket activity
+   
+2. Login Success/Failed notification
+3. Перевести трекинг тасков на трекинг групп тасков
+4. Сделать связанную БД внешними ключами для поддержания целостности данных.
+5. PROJECT_TACC_ID сделать уникальным ключом

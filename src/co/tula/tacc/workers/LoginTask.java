@@ -1,4 +1,4 @@
-package co.tulatacc;
+package co.tula.tacc.workers;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

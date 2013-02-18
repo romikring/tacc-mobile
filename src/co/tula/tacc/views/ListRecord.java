@@ -1,5 +1,6 @@
-package co.tulatacc;
+package co.tula.tacc.views;
 
+import co.tula.tacc.R;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;

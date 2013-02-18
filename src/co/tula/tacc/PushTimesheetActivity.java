@@ -1,5 +1,6 @@
-package co.tulatacc;
+package co.tula.tacc;
 
+import co.tula.tacc.R;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;

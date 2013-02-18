@@ -1,5 +1,7 @@
-package co.tulatacc;
+package co.tula.tacc;
 
+import co.tula.tacc.tools.TaccDbOpenHelper;
+import co.tula.tacc.R;
 import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;

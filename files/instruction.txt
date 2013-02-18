@@ -1,3 +1,5 @@
+server: https://tacc-qa.tula.co
+
 Вызовы
 
 1. Авторизация

@@ -1,13 +1,15 @@
-package co.tulatacc;
+package co.tula.tacc.tools;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import co.tula.tacc.entity.Project;
 
 public class TaccDbOpenHelper extends SQLiteOpenHelper {
 	private final static int DATABASE_VERSION = 9;
@@ -142,7 +144,7 @@ public class TaccDbOpenHelper extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 	
-	public long startLap(int startTime, int task)
+	public long startLap(long startTime, long task)
 	{
 		ContentValues cv = new ContentValues();
 		
@@ -154,7 +156,7 @@ public class TaccDbOpenHelper extends SQLiteOpenHelper {
 		return getWritableDatabase().insert(TABLE_LAPS, null, cv);
 	}
 	
-	public boolean endLap(int endTime, int lapId)
+	public boolean endLap(long endTime, long lapId)
 	{
 		ContentValues cv = new ContentValues();
 		
@@ -178,11 +180,66 @@ public class TaccDbOpenHelper extends SQLiteOpenHelper {
 			return null;
 		}
 		
+		cur.moveToFirst();
+		
 		HashMap<String, String> hash = new HashMap<String, String>(5);
 		for (String key : result) {
 			hash.put(key, cur.getString(cur.getColumnIndex(key)));
 		}
 		
+		cur.close();
+		
 		return hash;
+	}
+	
+	public long getTaskSpentTime(long taskId, long startDate, long endDate)
+	{
+		String whereArgs[] = null;
+		String sql = "SELECT sum(" + LAPS_COL_END_TIME + "-" + LAPS_COL_START_TIME + ") AS time " +
+			" FROM " + TABLE_LAPS + " WHERE (" + LAPS_COL_START_TIME + " >= " + startDate +
+			") AND (" + LAPS_COL_START_TIME + " < " +endDate + ") AND (" + LAPS_COL_STATE + " = 0)";
+		
+		Cursor cur = getWritableDatabase().rawQuery(sql, whereArgs);
+		cur.moveToFirst();
+		long time = cur.getLong(cur.getColumnIndex("time"));
+		cur.close();
+		
+		return time;
+	}
+	
+	@SuppressLint("DefaultLocale")
+	public void updateProjects(final ArrayList<Project> projects)
+	{
+		final ContentValues cv = new ContentValues();
+		String whereArgs[] = null;
+		final String findSql = "SELECT " + PROJECTS_COL_NAME + " FROM " + TABLE_PROJECTS +
+			" WHERE " + PROJECTS_COL_TACC_ID + " = %d";
+		
+		int count = projects.size();
+		
+		for (int i=0; i < count; ++i) {
+			Project p = projects.get(i);
+			
+			Cursor findCursor = getWritableDatabase().rawQuery(String.format(findSql, p.getId()), whereArgs);
+			if (findCursor.getCount() > 0) {
+				findCursor.moveToFirst();
+				if (findCursor.getString(0) != p.getName()) {
+					// Update current project
+					String where = String.format(PROJECTS_COL_TACC_ID + " = %d", p.getId());
+					cv.clear();
+					cv.put(PROJECTS_COL_NAME, p.getName());
+					
+					getWritableDatabase().update(TABLE_PROJECTS, cv, where, whereArgs);
+				}
+			} else {
+				// Insert new project
+				cv.clear();
+				cv.put(PROJECTS_COL_NAME, projects.get(i).getName());
+				cv.put(PROJECTS_COL_TACC_ID, projects.get(i).getId());
+				
+				getWritableDatabase().insert(TABLE_PROJECTS, null, cv);
+			}
+			findCursor.close();
+		}
 	}
 }

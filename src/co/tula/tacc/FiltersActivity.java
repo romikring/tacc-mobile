@@ -1,6 +1,8 @@
-package co.tulatacc;
+package co.tula.tacc;
 
 import java.util.TimerTask;
+
+import co.tula.tacc.R;
 
 import android.app.Activity;
 import android.os.Bundle;

@@ -1,31 +1,88 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/window.max"
+    android:orientation="vertical"
     tools:context=".ItemsList" >
     
-    <EditText
-        style="@style/EditTextSize"
-        android:id="@+id/start_date"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="15dp"
-        android:text="01/01/2013"
-        />
+        android:orientation="horizontal"
+        >
+	    <EditText
+	        style="@style/EditTextSize"
+	        android:id="@+id/start_date"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="15dp"
+	        android:text="01/01/2013"
+	        />
+	    
+	    <EditText
+	        style="@style/EditTextSize"
+	        android:id="@+id/end_date"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginRight="15dp"
+	        android:text="01/01/2013"
+	        />
+    </LinearLayout>
     
-    <EditText
-        style="@style/EditTextSize"
-        android:id="@+id/end_date"
-        android:layout_width="wrap_content"
+    <ListView
+        android:id="@+id/task_list"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+        
+    </ListView>
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="15dp"
-        android:text="01/01/2013"
-        />
-    
+        android:orientation="horizontal"
+        >
+	    
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            >
+            
+            <TextView
+                android:id="@+id/month_hours"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="month"
+                />
+            
+            <TextView
+                android:id="@+id/day_hours"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="day"
+                />
+            
+        </LinearLayout>
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/add_track_button"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:text="@string/tasks_button"
+            />
+        
+        <Button
+            android:id="@+id/track_list_button"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:text="@string/tasks_button"
+            />
+    </LinearLayout>
+
+</LinearLayout>
