@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import co.tula.tacc.tools.TaccDbOpenHelper;
-import co.tula.tacc.R;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
@@ -16,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import co.tula.tacc.tables.LapsTable;
 
 public class InTimeActivity extends Activity
 {
@@ -26,7 +24,7 @@ public class InTimeActivity extends Activity
 	private TextView mTimerView;
 	private Button mStartPauseButton;
 	
-	private TaccDbOpenHelper db;
+	private LapsTable lapsTable;
 	
 	private long mills;
 	private long lapId;
@@ -78,8 +76,6 @@ public class InTimeActivity extends Activity
         mTimerView = (TextView) findViewById(R.id.timer);
         mStartPauseButton = (Button) findViewById(R.id.start_pause_button);
         
-        db = new TaccDbOpenHelper(this);
-        
         mStartPauseButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -88,7 +84,7 @@ public class InTimeActivity extends Activity
 				if (mStartPauseButton.getText() == getString(R.string.play_button)) {
 					
 					mills = System.currentTimeMillis() / 1000;
-					lapId = db.startLap(mills, taskId);
+					lapId = lapsTable.startLap(mills, taskId);
 					
 					mStartPauseButton.setText(getText(R.string.pause_button));
 				
@@ -97,7 +93,7 @@ public class InTimeActivity extends Activity
 					
 					mStartPauseButton.setText(getText(R.string.play_button));
 					
-					db.endLap(System.currentTimeMillis() / 1000, lapId);
+					lapsTable.endLap(System.currentTimeMillis() / 1000, lapId);
 					
 					mills = 0l;
 					lapId = 0l;
@@ -133,12 +129,12 @@ public class InTimeActivity extends Activity
     	cal.add(Calendar.DAY_OF_MONTH, day);
     	endDate = cal.getTimeInMillis() / 1000L;
     	
-    	mDayWorkedUnderTask = db.getTaskSpentTime(taskId, Math.min(startDate, endDate), Math.max(startDate, endDate));
+    	mDayWorkedUnderTask = lapsTable.getTaskSpentTime(taskId, Math.min(startDate, endDate), Math.max(startDate, endDate));
     	if (mDayWorkedUnderTask > 0) {
     		mTimerView.setText(calcTimerDisplay(mDayWorkedUnderTask));
     	}
     	
-    	HashMap<String, String> hash = db.findActiveLap();
+    	HashMap<String, String> hash = lapsTable.findActiveLap();
     	
     	if (null == hash) {
     		
@@ -149,8 +145,8 @@ public class InTimeActivity extends Activity
     		
     	} else {
   
-	    	mills = Long.parseLong(hash.get(TaccDbOpenHelper.LAPS_COL_START_TIME));
-	    	lapId = Long.parseLong(hash.get(TaccDbOpenHelper.LAPS_COL_ID));
+	    	mills = Long.parseLong(hash.get(LapsTable.LAPS_COL_START_TIME));
+	    	lapId = Long.parseLong(hash.get(LapsTable.LAPS_COL_ID));
 	    	
 	    	mStartPauseButton.setText(getString(R.string.pause_button));
 	    	

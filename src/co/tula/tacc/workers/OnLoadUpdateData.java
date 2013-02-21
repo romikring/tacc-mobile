@@ -2,37 +2,31 @@ package co.tula.tacc.workers;
 
 import java.util.ArrayList;
 
-import android.content.Context;
+import android.util.Log;
 import co.tula.tacc.entity.Project;
-import co.tula.tacc.tools.TaccDbOpenHelper;
+import co.tula.tacc.tables.ProjectsTable;
 
 public class OnLoadUpdateData
 {
-	private Context context;
+	private ProjectsTable projectsTable;
 	
 	private ArrayList<Project> mProjects = null;
 	
-	public OnLoadUpdateData(Context context)
+	public OnLoadUpdateData()
 	{
-		this.context = context;
+		projectsTable = new ProjectsTable();
 	}
 	
 	public void update()
 	{
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				TaccDbOpenHelper dbHelper = new TaccDbOpenHelper(context);
-				
-				if (mProjects != null && !mProjects.isEmpty()) {
-					dbHelper.updateProjects(mProjects);
-					mProjects = null;
-				}
-			}
-		}).start();
+		Log.d("tACC", "UPDATE");
+		if (mProjects != null && !mProjects.isEmpty()) {
+			projectsTable.updateProjects(mProjects);
+			mProjects = null;
+		}
 	}
 	
-	public OnLoadUpdateData leadUpProjects(final ArrayList<Project> projects)
+	public OnLoadUpdateData leadUpProjects(ArrayList<Project> projects)
 	{
 		mProjects = projects;
 		

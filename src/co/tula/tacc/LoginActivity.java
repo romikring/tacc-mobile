@@ -10,16 +10,21 @@ import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
 import co.tula.tacc.tools.TaccConnector;
+import co.tula.tacc.tools.TaccDbOpenHelper;
 import co.tula.tacc.workers.OnLoadUpdateData;
 
 public class LoginActivity extends Activity {
 	
-	public static String mEmail;
-	public static String mPassword;
+	public static String mEmail = "ApiConsumer@tula.co";
+	public static String mPassword = "secret";
 	public static String mCookie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    	
+    	// This string must be in Launcher
+    	TaccDbOpenHelper.context = getApplicationContext();
+    	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
         
@@ -32,18 +37,17 @@ public class LoginActivity extends Activity {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						if (TaccConnector.authenticate("ApiConsumer@tula.co", "secret")) {
+						if (TaccConnector.authenticate(mEmail, mPassword)) {
 
-							OnLoadUpdateData updater = new OnLoadUpdateData(LoginActivity.this);
-							
+							OnLoadUpdateData updater;
+							updater = new OnLoadUpdateData();
 							updater.leadUpProjects(TaccConnector.loadProjects());
-							
 							updater.update();
 						}
 					}
 				}).start();
 				
-				Intent intent = new Intent(LoginActivity.this, ItemsListActivity.class);
+				Intent intent = new Intent(LoginActivity.this, SelectToTrackActivity.class);
 				startActivity(intent);
 			}
 		});

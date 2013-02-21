@@ -20,6 +20,7 @@
     <string name="play_button">Play</string>
     <string name="pause_button">Pause</string>
     <string name="tasks_button">Tasks</string>
+    <string name="new_label">New</string>
 
     <!-- Activities titles -->
     <string name="title_activity_login">Login In</string>

@@ -41,18 +41,29 @@
         >
         
         <Button
+            android:id="@+id/mark_closed_btn"
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_marginRight="4dp"
+            android:layout_marginRight="3dp"
             android:text="@string/mark_closed"
             />
         
         <Button
+            android:id="@+id/new_item_btn"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:text="@string/new_label"
+            />
+        
+        <Button
+            android:id="@+id/tack_selected_btn"
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_marginLeft="4dp"
+            android:layout_marginLeft="3dp"
             android:text="@string/trak_selected"
             />
         

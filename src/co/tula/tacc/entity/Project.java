@@ -3,11 +3,17 @@ package co.tula.tacc.entity;
 public class Project {
 	private String mName;
 	private long mId;
+	private long mTaccId;
 	
-	public Project(long id, final String name)
+	public Project(long id, long taccId, final String name)
 	{
 		mName = name;
 		mId = id;
+		mTaccId =taccId; 
+	}
+	
+	public Project()
+	{
 	}
 
 	public String getName() {
@@ -28,5 +34,18 @@ public class Project {
 		this.mId = id;
 		
 		return this;
+	}
+
+	public long getTaccId() {
+		return mTaccId;
+	}
+
+	public void setTaccId(long taccId) {
+		mTaccId = taccId;
+	}
+	
+	@Override
+	public String toString() {
+		return mName;
 	}
 }

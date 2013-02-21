@@ -146,8 +146,6 @@ final public class TaccConnector
      */
     public static ArrayList<Project> loadProjects()
     {
-    	ArrayList<Project> list = new ArrayList<Project>();
-    	
     	final HttpResponse responce;
         final HttpGet get = new HttpGet(PROJECT_LIST);
         get.addHeader("Cookie", mCookie);
@@ -159,20 +157,21 @@ final public class TaccConnector
             if (responce.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
             	Log.d(TAG, "Request failed, code: " + responce.getStatusLine().getStatusCode());
             	
-            	return list;
+            	return null;
             }
             
             final String xml = EntityUtils.toString(responce.getEntity());
             if (xml == null || xml == "") {
             	Log.d(TAG, "XML string is empty");
-            	return list;
+            	return null;
             }
             final Document dom = TaccDomHelper.getDomElement(xml);
             if (dom == null) {
             	Log.d(TAG, "DOM Document is null object");
-            	return list;
+            	return null;
             }
             
+            ArrayList<Project> list = new ArrayList<Project>();
             NodeList nodes = dom.getElementsByTagName("project");
             int count = nodes.getLength();
             long id;
@@ -186,18 +185,19 @@ final public class TaccConnector
             	if (id <= 0 || null == name)
             		continue;
             	
-            	list.add(new Project(id, name));
+            	list.add(new Project(0, id, name));
             }
+            
+            Log.d("TAG TACC", "List Count: " + list.size());
+            return list;
             
             
         } catch (final IOException e) {
             Log.e(TAG, "IOException when getting authtoken", e);
             
-            return list;
+            return null;
         } finally {
             Log.v(TAG, "getAuthtoken completing");
         }
-    	
-    	return list;
     }
 }
